@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android" 
+  xmlns:scheffsblend="http://schemas.android.com/apk/res/com.scheffsblend.smw">
+    <PreferenceCategory 
+    	android:title="Touch Controls Layout" 
+    	android:summary="Choose the layout you prefer for the on-screen controls." 
+    	android:defaultValue="@array/layoutListArray">
+    	<com.scheffsblend.smw.Preferences.ImageListPreference
+            android:entries="@array/listNames"
+            scheffsblend:entryImages="@array/imageValues"
+            android:entryValues="@array/listValues"
+            android:key="layout"
+            android:summary="Choose your controller layout"
+            android:title="On-Screen Controls" />
+</PreferenceCategory>
+    
+</PreferenceScreen>

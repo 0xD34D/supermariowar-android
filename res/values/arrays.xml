@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="layoutListArray">
+        <item>D-Pad Bottom left, buttons bottom right</item>
+        <item>D-Pad Bottom right, buttons bottom left</item>
+        <item>D-Pad top left, buttons top right</item>
+        <item>D-Pad top right, buttons top left</item>
+        <item>D-Pad top left, buttons bottom right</item>
+        <item>D-Pad top right, buttons bottom left</item>
+        <item>D-Pad Bottom left, buttons top right</item>
+        <item>D-Pad Bottom right, buttons top left</item>
+    </string-array>
+    <string-array name="layoutValueArray">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    
+</resources>

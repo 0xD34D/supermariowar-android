@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+ <title>Super Mario War Readme</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <style type="text/css" media="all">
+ body, p, form, input, select, label, textarea, li, div, td{
+   font:  11px Tahoma, Arial, Helvetica, sans-serif;
+   color: #ffffff;
+   background-color: #0099ff;
+ }
+ 
+ pre {
+   font-size: 11px;
+ }
+ 
+ div {
+    margin-left: 15px;
+ }
+ 
+ div.leftbar {
+   margin-left: 15px;
+   padding-left: 6px;
+   border-left: 1px solid grey;
+ }
+ 
+ div#content {
+   width: 600px;
+   margin: 0;
+   padding: 0;
+   border: none;
+ }
+ 
+ table {
+   border-collapse: collapse;
+ }
+ 
+ table tr td {
+   padding: 2px 5px 2px 5px;
+ }
+ 
+ td.borderright {
+   border-right: 1px solid black;
+ }
+ 
+ tr.borderbottom td {
+   border-bottom: 1px solid black;
+ }
+ 
+ 
+ h1, h2, h3, h4 {
+   margin-top: 12px;
+   margin-bottom: 4px;
+ }
+ 
+ h1 a, h2 a, h3 a, h4 a {
+   text-decoration: none;
+ }
+ 
+ h1 {
+   font-size: 22px;
+ }
+ 
+ h2 {
+   font-size: 17px;
+ }
+ 
+ h3 {
+   font-size: 13px;
+ }
+ 
+ h4 {
+   font-size: 11px;
+   
+ }
+ 
+ 
+ a:visited {
+   color: blue;
+ }
+ 
+ p {
+   margin-top: 0;
+   margin-bottom: 10px;
+ }
+ 
+ dd, dl, dt {
+   margin-top: 0;
+ }
+ 
+ </style>
+</head>
+
+<body>
+
+<center><img src="docs/splash.png"></center>
+<div id="content">
+ <h1>Getting Started</h1>
+
+ <div id="gs" class="leftbar">
+	<p><img src="docs/ss01.png"></p>
+
+	<p>
+	Super Mario War is a game for up to four players with many different modes of play.  The basic
+	goal of the game is to be the last player standing, and to accomplish this goal you must jump
+	on your opponents' heads to kill them.  There are many Mario-themed items you can use to help
+	you kill your opponents, as well.  In addition, there are several variations on this basic
+	gameplay mechanic which you can try, such as Chicken, Capture The Flag, and so on.  Plus, for
+	those who enjoy customization, there are several aspects of the game which you can tweak to
+	your liking through the Options menus, and if you like, you can make your own maps, skins, and
+	other custom content to use (or download others' to use), too!
+	</p>
+
+	<p>
+	This section of the manual explains how to navigate the game's menus, and contains a short
+	explanation of Tournaments and Tours as well.
+	</p>
+
+	<h2>The Main Menu</h2>
+	<p><img src="docs/ss02.png"></p>
+
+	<p>
+	From this menu, you can access everything else in the game.
+	<li><b>Start</b> will take you to the Team and Character Selection screen (see below).
+	<li><b>Players</b> allows you to change players between Player (human), Bot (computer), and
+	None.  You can't have less than two players active at any one time.
+	<li><b>Match</b> allows you to select Single Game, Tournament 2 through 10, or any Tours you
+	have on your machine.  See Tournaments and Tours, below.
+	<li><b>Options</b> takes you to the Options menu.  For more information, check its section
+	towards the end of this manual.
+	<li><b>Controls</b> lets you configure the players' control schemes to your liking.  For more
+	info, check the Controls section of this manual.
+	<li><b>Exit</b> causes the game to exit.
+	</p>
+
+	<h2>Team and Character Selection</h2>
+	<p><img src="docs/ss03.png"></p>
+	<p><img src="docs/ss04.png"></p>
+
+	<p>
+	From this screen, you can configure who is using which character and is on which team.
+	<li>You can select what character you'd like to be, out of all the skins you have on your
+	machine, with Up and Down.
+	<li>You can select what team you want to be on with Left and Right.
+	<li>If you want to have the game select a skin for you at random, press Up and Down together
+	(or if using a joystick, press the Random button).
+	<li>Press the "Enter" button to lock in your selection, then again to go to the Game Selection screen.
+	</p>
+
+	<h2>Game Selection</h2>
+	<p><img src="docs/ss05.png"></p>
+	<p>
+	From this menu, you can select your game mode, select the map you wish to use, change various
+	mode settings, and tag your maps for easy selection.  (When playing a Tour, all options on
+	this screen, besides Start, are disabled.)
+	<li><b>Start</b> starts the game.
+	<li><b>Mode</b> allows you to change game modes.  For info on these, please refer to the Game
+	Modes section of this manual.
+	<li><b>Lives/Kills/Time/Etc.</b> allows you to change the current game mode's basic parameter
+	(i.e. the game length).
+	<li><b>Map</b> allows you to change the map you want to use.  You can press Left or Right to
+	pick another map.
+	<li><b>Filters</b> allows you to select maps that only meet certain criteria.  You can select
+	one or more categories (such as whether or not the map contains moving platforms) and the
+	game will only give you maps that meet all the criteria established.  The bottom category,
+	Simple, can be used as a custom filter by selecting the green question mark icon, which will
+	give you a thumbnail view (see below) of all the maps.  From there, maps can be toggled on
+	(signified by a little coin) and off.
+	<li><b>Thumbs</b> allows you to view many maps at once with a "thumbnail"-style view.  To
+	view other pages, scroll up or down off the screen.
+	</p>
+
+	<h2>Playing the Game</h2>
+	<p><img src="docs/ss06.png"></p>
+
+	<p>
+	The main goal of the game is to stomp on your opponents' heads to kill them, although depending
+	on the map you're playing on, you may be able to kill them in other ways, such as with items.
+	There may also be additional rules or a different way of winning, depending on the mode you are
+	playing; for information on these, you can check the Game Modes section of this manual.  For
+	information on the controls you'll be using to play the game, check out the section on Controls,
+	below.  And to learn about the different items and map elements you can use to turn the tables on
+	your opponents, take a look at the Items and Special Blocks sections, towards the middle of the
+	manual.
+	</p>
+
+	<h2>Tournaments and Tours</h2>
+	<p><img src="docs/ss07.png"> <img src="docs/ss08.png"></p>
+
+	<p>
+	In a Tournament, players play games until one player has amassed a certain number of wins.
+	The number of the Tournament determines how many wins are required (so, if you pick Tournament
+	4, you have to win four times).  Each time a player wins, they will receive an icon on the
+	scoreboard (first picture, above).  This icon will be representative of the mode played.
+	</p>
+
+	<p>
+	In a Tour, players play a series of predetermined games ("tour stops").  At the end of each
+	game, players receive points based on how well they placed, and icons will be displayed on
+	the scoreboard (second picture, above) to show just how each player placed in that round.
+	Tours can be created by making a text file in the game's Tours subdirectory, following the
+	correct format (check out simple.txt for more info).  It is possible to designate how valuable
+	each individual tour stop is (this information is displayed along the top of the scoreboard -
+	see the screenshot), as well as which tour stops grant a bonus item to the winner.
+	</p>
+
+	<p>
+	At the end of a Tournament, or after every game within the Tournament if that option is set
+	(see the Options section towards the end of this manual), the winner will get a chance to
+	spin the bonus wheel to acquire an item that they can use in the next game or games.  However,
+	in Tours, the bonus wheel will only appear in places where the tour's creator designates it,
+	regardless of any current settings.  Tour stops with this opportunity are represented on the
+	scoreboard as small winged yellow boxes.
+	</p>
+ </div>
+ <div>
+   <p><a href="instructions.html">ToC</a> <a href="blah.html">blah</a>
+
+</body>
+</html>

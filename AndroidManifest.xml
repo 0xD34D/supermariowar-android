@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.scheffsblend.smw"
+      android:versionCode="48" android:versionName="1.8.15">
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="9"></uses-sdk>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <application android:label="@string/app_name" android:icon="@drawable/icon" android:debuggable="true">
+        <activity android:name="com.scheffsblend.smw.MainMenuActivity"
+                  android:label="@string/app_name" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.scheffsblend.smw.SDLActivity"
+                  android:label="@string/app_name" android:screenOrientation="landscape" android:debuggable="true">
+        </activity>
+        <activity android:name="com.scheffsblend.smw.InstructionsActivity"
+                  android:label="@string/app_name">
+        </activity>
+        <activity android:name=".Preferences.SMWSettings"
+                  android:label="@string/app_name" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
+    </application>
+</manifest> 

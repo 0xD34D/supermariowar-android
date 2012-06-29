@@ -1,0 +1,130 @@
+
+/* Include the SDL main definition header */
+#include "SDL_main.h"
+#include "gfx.h"
+#include "jni_smw.h"
+
+/*******************************************************************************
+                 Functions called by JNI
+*******************************************************************************/
+#include <jni.h>
+
+//static JNIEnv *g_jniEnv = 0;
+static JavaVM *g_VM;
+
+jclass jNativesCls;
+jmethodID jStartMusicMethod;
+jmethodID jStopMusicMethod;
+
+// Called before SDL_main() to initialize JNI bindings in SDL library
+extern "C" void SDL_Android_Init(JNIEnv* env, jclass cls);
+
+// Library init
+extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved);
+
+// Start up the SDL app
+JNIEXPORT jint JNICALL Java_com_scheffsblend_smw_SDLActivity_nativeInit(JNIEnv* env, jclass cls, jobject obj)
+{
+    /* This interface could expand with ABI negotiation, calbacks, etc. */
+    SDL_Android_Init(env, cls);
+	(*env)->GetJavaVM(env, &g_VM);
+
+	jNativesCls = (*env)->FindClass(env, CB_CLASS);
+
+	// Load OnStartMusic(String name)
+	jStartMusicMethod = (*env)->GetStaticMethodID(env, jNativesCls
+			, CB_CLASS_SM_CB
+			, CB_CLASS_SM_SIG);
+
+	if ( jStartMusicMethod == 0 ) {
+		jni_printf("Unable to find method OnStartSound sig: %s ", CB_CLASS_SS_SIG);
+	    return -1;
+	}
+
+	// Load OnStopMusic()
+	jStopMusicMethod = (*env)->GetStaticMethodID(env, jNativesCls
+			, CB_CLASS_STOPM_CB
+			, CB_CLASS_STOPM_SIG);
+
+	if ( jStartMusicMethod == 0 ) {
+		jni_printf("Unable to find method OnStartSound sig: %s ", CB_CLASS_SS_SIG);
+	    return -1;
+	}
+
+
+    /* Run the application code! */
+    int status;
+    char *argv[2];
+    argv[0] = strdup("SDL_app");
+    argv[1] = NULL;
+    status = SDL_main(1, argv);
+
+    /* We exit here for consistency with other platforms. */
+    exit(status);
+}
+
+// Init the SDL app graphics
+extern  "C" void Java_com_scheffsblend_smw_SDLActivity_gfxInit(JNIEnv* env, jclass cls,
+		jint width, jint height)
+{
+	gfx_init(width, height, true);
+}
+
+/* vi: set ts=4 sw=4 expandtab: */
+
+/**
+ * Fires when a background song is requested
+ */
+void jni_start_music (const char * name)
+{
+	/*
+	 * Attach to the curr thread otherwise we get JNI WARNING:
+	 * threadid=3 using env from threadid=15 which aborts the VM
+	 */
+	JNIEnv *env;
+
+	if ( !g_VM) {
+		return;
+	}
+
+	(*g_VM)->AttachCurrentThread (g_VM, (void **) &env, NULL);
+
+	jmethodID mid = (*env)->GetStaticMethodID(env, jNativesCls
+		, CB_CLASS_SM_CB
+		, CB_CLASS_SM_SIG);
+
+	if (mid) {
+		(*env)->CallStaticVoidMethod(env, jNativesCls
+				, mid
+				, (*env)->NewStringUTF(env, name) );
+
+	}
+}
+
+/**
+ * Fires when a background song is stopped
+ */
+void jni_stop_music ( void )
+{
+	/*
+	 * Attach to the curr thread otherwise we get JNI WARNING:
+	 * threadid=3 using env from threadid=15 which aborts the VM
+	 */
+	JNIEnv *env;
+
+	if ( !g_VM) {
+		return;
+	}
+
+	(*g_VM)->AttachCurrentThread (g_VM, (void **) &env, NULL);
+
+	jmethodID mid = (*env)->GetStaticMethodID(env, jNativesCls
+		, CB_CLASS_STOPM_CB
+		, CB_CLASS_STOPM_SIG);
+
+	if (mid) {
+		(*env)->CallStaticVoidMethod(env, jNativesCls
+				, mid);
+
+	}
+}

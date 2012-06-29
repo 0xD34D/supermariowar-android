@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<string-array name="listNames">
+<item>"Type 1"</item>
+<item>"Type 2"</item>
+<item>"Type 3"</item>
+<item>"Type 4"</item>
+<item>"Type 5"</item>
+<item>"Type 6"</item>
+<item>"Type 7"</item>
+<item>"Type 8"</item>
+</string-array>
+<string-array name="listValues">
+<item>"1"</item>
+<item>"2"</item>
+<item>"3"</item>
+<item>"4"</item>
+<item>"5"</item>
+<item>"6"</item>
+<item>"7"</item>
+<item>"8"</item>
+</string-array>
+<array name="imageValues">
+<item>@drawable/layout1_thumb</item>
+<item>@drawable/layout2_thumb</item>
+<item>@drawable/layout3_thumb</item>
+<item>@drawable/layout4_thumb</item>
+<item>@drawable/layout5_thumb</item>
+<item>@drawable/layout6_thumb</item>
+<item>@drawable/layout7_thumb</item>
+<item>@drawable/layout8_thumb</item>
+</array>
+</resources>
