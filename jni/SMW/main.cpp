@@ -389,6 +389,8 @@ Procedure for adding a new powerup:
 	#endif
 #endif
 
+#include "android_storage.h"
+
 //------ system stuff ------
 SDL_Surface		*screen;		//for gfx (maybe the gfx system should be improved -> resource manager)
 SDL_Surface		*blitdest;		//the destination surface for all drawing (can be swapped from screen to another surface)
@@ -786,6 +788,7 @@ std::vector<WorldMusicOverride*> worldmusicoverrides;
 int g_iNextNetworkID = 0;
 int g_iNextMessageID = 0;
 char szIPString[32] = "";
+char szOptionsFile[128] = "";
 
 //NetServer netServer;
 //NetClient netClient;
@@ -1367,7 +1370,10 @@ int main(int argc, char *argv[])
 	SetupDefaultGameModeSettings();
 	
 	//Read saved settings from disk
-	FILE * fp = OpenFile("/sdcard/smw/options.bin", "rb");
+	strcat(szOptionsFile, getStorageDir());
+	strcat(szOptionsFile, "/options.bin");
+	LOGI("Opening %s", szOptionsFile);
+	FILE * fp = OpenFile(szOptionsFile, "rb");
 
 	if(fp)
 	{
@@ -1604,7 +1610,7 @@ int main(int argc, char *argv[])
 	}	
 
 	LOGI("\n---------------- shutdown ----------------\n");
-	
+	writeOptions();
 	for(short i = 0; i < GAMEMODE_LAST; i++)
 		delete gamemodes[i];
 
@@ -4278,9 +4284,9 @@ void UpdateMusicWithOverrides()
 bool writeOptions( void )
 {
 	//Read saved settings from disk
-	FILE * fp = OpenFile("/sdcard/smw/options.bin", "wb");
+	FILE * fp = OpenFile(szOptionsFile, "wb");
 
-	LOGI("Saving /sdcard/smw/options.bin\n");
+	LOGI(szOptionsFile);
 
 	if(fp)
 	{

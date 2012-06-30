@@ -1,11 +1,14 @@
 package com.scheffsblend.smw;
 
 import com.scheffsblend.smw.Preferences.SMWSettings;
+import com.scheffsblend.util.SimpleDialogs;
+import com.scheffsblend.util.SimpleDialogs.OnYesNoResponse;
 import com.scheffsblend.util.Utility;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +38,7 @@ import android.os.AsyncTask;
 public class MainMenuActivity extends Activity {
 
 	private Button mLaunchButton;
+	private Button mInstallData;
 	private Button mInstructionsButton;
 	private Button mSettingsButton;
 	private AnimatedImageView mLogo;
@@ -55,10 +59,12 @@ public class MainMenuActivity extends Activity {
         
         mLogo = (AnimatedImageView)findViewById(R.id.smwLogo);
         mLaunchButton = (Button)findViewById( R.id.launchGame );
+        mInstallData = (Button)findViewById(R.id.installData);
         mInstructionsButton = (Button)findViewById( R.id.instructions );
         mSettingsButton = (Button)findViewById( R.id.settings );
 		Typeface type = Typeface.createFromAsset( this.getAssets(), "fonts/jellybelly.ttf" );
 		mLaunchButton.setTypeface( type );
+		mInstallData.setTypeface( type );
 		mInstructionsButton.setTypeface( type );
 		mSettingsButton.setTypeface( type );
 		mLaunchButton.setEnabled( false );
@@ -72,6 +78,14 @@ public class MainMenuActivity extends Activity {
 			}
         	
         });
+        
+        mInstallData.setOnClickListener( new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+	        	startDownload();
+			}
+		});
         
         mInstructionsButton.setOnClickListener( new OnClickListener() {
 			@Override
@@ -92,9 +106,26 @@ public class MainMenuActivity extends Activity {
         if( Utility.gameDataInstalled() == false ) {
         	if ( Utility.gameDataFolderExists() == false )
         		Utility.createGameDataFolder();
-        	startDownload();
-        } else
+        	SimpleDialogs.displayYesNoDialogIcon("Yes", "No", "Download game data",
+        			"Super Mario War requires game related files to be downloaded" +
+        			" in order for the game to function.  Would " +
+        			"you like to download those now?", this, new OnYesNoResponse() {
+						
+						@Override
+						public void onYesNoResponse(boolean isYes) {
+							if (isYes)
+					        	startDownload();
+							else {
+					        	mLaunchButton.setVisibility(View.INVISIBLE);
+					        	mInstallData.setVisibility(View.VISIBLE);
+							}
+						}
+					}, R.drawable.ic_question);
+        } else {
         	mLaunchButton.setEnabled( true );
+        	mLaunchButton.setVisibility(View.VISIBLE);
+        	mInstallData.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Events
@@ -227,6 +258,7 @@ public class MainMenuActivity extends Activity {
     				{
     					final String msg = "Extracting " + destinationFilePath;
     					Log.i("UNZIP", "Extracting " + destinationFilePath);
+    					publishProgress("0", msg);
 
     					/*
     					 * Get the InputStream for current entry
@@ -267,6 +299,7 @@ public class MainMenuActivity extends Activity {
         }
         protected void onProgressUpdate(String... progress) {
              mUnzipProgressDialog.setProgress(Integer.parseInt(progress[0]));
+             mUnzipProgressDialog.setMessage(progress[1]);
         }
 
         @Override
@@ -288,11 +321,29 @@ public class MainMenuActivity extends Activity {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return;
 			}
-			
+			saveExternalStorageDir(dataPath);
 			// now enable the launch game button so the player can get on with it
-			mLaunchButton.setEnabled(true);
+        	mLaunchButton.setEnabled( true );
+        	mLaunchButton.setVisibility(View.VISIBLE);
+        	mInstallData.setVisibility(View.INVISIBLE);
         }
+    }
+    
+    private void saveExternalStorageDir(String path) {
+    	FileOutputStream out;
+    	try {
+			out = openFileOutput("storage", MODE_PRIVATE);
+	    	out.write(path.getBytes());
+	    	out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
     }
 
 	@Override

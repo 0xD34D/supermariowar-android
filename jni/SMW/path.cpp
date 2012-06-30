@@ -11,6 +11,7 @@
 #endif
 
 #include "path.h"
+#include "android_storage.h"
 
 using namespace std;
 char SMW_Root_Data_Dir[PATH_MAX + 2] = "";
@@ -104,7 +105,8 @@ const string convertPath(const string& source)
 		#endif
 
 		#ifndef _WIN32
-			strcat(SMW_Root_Data_Dir, "/sdcard/smw/");
+			strcat(SMW_Root_Data_Dir, getStorageDir());
+			strcat(SMW_Root_Data_Dir, "/");
 		#endif
 	    
 		are_paths_initialized = true;
