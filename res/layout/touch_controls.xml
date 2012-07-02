@@ -75,7 +75,7 @@
 	         	android:textSize="32dp"
 	         	android:textStyle="bold"
 	         />
-			 <ImageView 
+			 <com.scheffsblend.multitouch.controller.MultiTouchView 
 				android:id="@+id/multiTouchView"
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"

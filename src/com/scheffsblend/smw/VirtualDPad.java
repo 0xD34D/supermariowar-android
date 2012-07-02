@@ -41,7 +41,7 @@ public class VirtualDPad {
 	// center area needs a bit of a deadzone, store that value here
 	public int mDeadzone = 0;
 	
-	public void VirtualSitck() {
+	public VirtualDPad() {
 		mWidth = 0;
 		mHeight = 0;
 		mDeadzone = 0;
@@ -58,14 +58,14 @@ public class VirtualDPad {
 	// embedded coding side of me! :P
 	public int getPosition(float x, float y) {
 		int position = POS_CENTER;
-		if(x < (mWidth/2 - mDeadzone))
+		if(x < -0.5f)
 			position |= POS_LEFT;
-		else if(x > (mWidth/2 + mDeadzone))
+		else if(x > 0.5f)
 			position |= POS_RIGHT;
 		
-		if(y < (mHeight/2 - mDeadzone))
+		if(y < -0.5f)
 			position |= POS_UP;
-		else if(y > (mHeight/2 + mDeadzone))
+		else if(y > 0.5f)
 			position |= POS_DOWN;
 		
 		return position;

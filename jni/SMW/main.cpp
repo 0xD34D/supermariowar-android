@@ -1155,7 +1155,9 @@ int main(int argc, char *argv[])
 
 	//set standard game values
 	game_values.playercontrol[0]	= 1;
-	game_values.playercontrol[1]	= 0;
+	game_values.playercontrol[1]	= 2;
+	game_values.playercontrol[2]	= 2;
+	game_values.playercontrol[3]	= 2;
 	game_values.showfps				= true;
 	game_values.frameadvance		= false;
 	game_values.autokill			= false;
@@ -1501,6 +1503,7 @@ int main(int argc, char *argv[])
 			{
 				if(game_values.skinids[iPlayer] >= skinlist.GetCount() || game_values.skinids[iPlayer] < 0)
 					game_values.skinids[iPlayer] = 0;
+				game_values.playercontrol[iPlayer] = 1;
 			}
 
 			announcerlist.SetCurrent((short) abyte[2]);

@@ -4,12 +4,17 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.egl.*;
 
+import com.scheffsblend.multitouch.controller.MultiTouchView;
+import com.scheffsblend.multitouch.controller.MultiTouchView.OnInputChangedListener;
+
 import android.app.*;
 import android.content.*;
 import android.view.*;
 import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.os.*;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -25,7 +30,8 @@ import java.util.Iterator;
 /**
     SDL Activity
 */
-public class SDLActivity extends Activity {
+public class SDLActivity extends Activity
+	implements OnInputChangedListener {
 
 	private static final String TAG = "SMW-JAVA";
     // Main components
@@ -42,12 +48,20 @@ public class SDLActivity extends Activity {
 	private float mVstickX = 0;
 	private float mVstickY = 0;
 	private View mMultiTouchController;
+	private MultiTouchView mTouchView;
 	public static boolean mGameStarted = false;
 	private HashMap<String, View> mOnScreenControls;
 	private HashMap.Entry<String,View> touchedViews[] = new HashMap.Entry[2];
 	private static MusicPlayer mMusicPlayer;
 	private static Context ctx;
   
+	private static final int USE_BUTTON = 0;
+	private static final int TURBO_BUTTON = 1;
+	private static final int ENTER_BUTTON = 2;
+	private static final int ESCAPE_BUTTON = 3;
+	private int[] mButtonIDs = new int[4];
+	private int mCurrButtonsState = 0;
+	private int mPrevButtonsState = 0;
 
     static {
         // load the game as a shared library
@@ -74,7 +88,10 @@ public class SDLActivity extends Activity {
         mControls = (RelativeLayout)findViewById(R.id.controls);
         FrameLayout fl = (FrameLayout)findViewById(R.id.frameLayout);
         
-        loadOnScreenControls();
+        mTouchView = (MultiTouchView) findViewById(R.id.multiTouchView);
+        mTouchView.setNormalizeValues(true);
+        mTouchView.setOnInputChangeListener(this);
+        //loadOnScreenControls();
         
         // Set up the surface
         mSurface = new SDLSurface(getApplication());
@@ -96,12 +113,39 @@ public class SDLActivity extends Activity {
         super.onResume();
     }
 
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus) {
+			View v;
+			Rect r = new Rect();
+			v = findViewById(R.id.useButton);
+			v.getHitRect(r);
+			mButtonIDs[USE_BUTTON] = mTouchView.addButton(r);
+			v = findViewById(R.id.turboButton);
+			r = new Rect();
+			v.getHitRect(r);
+			mButtonIDs[TURBO_BUTTON] = mTouchView.addButton(r);
+			v = findViewById(R.id.enterButton);
+			r = new Rect();
+			v.getHitRect(r);
+			mButtonIDs[ENTER_BUTTON] = mTouchView.addButton(r);
+			v = findViewById(R.id.escapeButton);
+			r = new Rect();
+			v.getHitRect(r);
+			mButtonIDs[ESCAPE_BUTTON] = mTouchView.addButton(r);
+			mVStick = new VirtualDPad();
+		}
+	}
+
     private void setControlSchemeLayout() {
         SharedPreferences prefs = PreferenceManager
     	.getDefaultSharedPreferences(getBaseContext());
         String s = prefs.getString( "layout", "1" );
         int scheme = Integer.parseInt(s);
-        switch ( scheme ) {
+    	setContentView(R.layout.controls_scheme1);
+/*
+    	switch ( scheme ) {
         case 1:
         	setContentView(R.layout.controls_scheme1);
         	break;
@@ -127,6 +171,7 @@ public class SDLActivity extends Activity {
         	setContentView(R.layout.controls_scheme8);
         	break;
         }
+*/
     }
     
     // Messages from the SDLMain thread
@@ -282,7 +327,6 @@ public class SDLActivity extends Activity {
      * Adds all the touchscreen controls to the mOnScreenControls HashMap
      */
     private void loadOnScreenControls() {
-		mVStick = new VirtualDPad(180, 180, 24);
 
 		mOnScreenControls = new HashMap<String, View>();
     	mOnScreenControls.put("DPAD", this.findViewById(R.id.vstick));
@@ -567,6 +611,75 @@ public class SDLActivity extends Activity {
 	private static void OnSetVolume( int level ) {
 		Log.i(TAG, "OnSetVolume fired!");
 		mMusicPlayer.setVolume( level );
+	}
+
+	@Override
+	public void onInputChanged(float stickX, float stickY, int buttons) {
+		mVstickPosition = mVStick.getPosition(stickX, stickY);
+		if (mVstickPosition != mVstickLastPos) {
+			// get the bits that changed
+			int diff = (mVstickPosition ^ mVstickLastPos) & 0x0F;
+			// get the bits that changed and are current
+			int curr = (mVstickPosition & diff);
+			// get the bits that changed and are previous
+			int prev = (mVstickLastPos & diff);
+
+			// first check which direction(s) is no longer being
+			// pressed from the previous time
+			// and send a keyup event
+			if ((prev & VirtualDPad.POS_UP) != 0)
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_UPARROW);
+			if ((prev & VirtualDPad.POS_LEFT) != 0)
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_LEFTARROW);
+			if ((prev & VirtualDPad.POS_DOWN) != 0)
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_DOWNARROW);
+			if ((prev & VirtualDPad.POS_RIGHT) != 0)
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_RIGHTARROW);
+			// now check which direction(s) is current and was not
+			// pressed the previous time
+			// and send the keydown event.
+			if ((curr & VirtualDPad.POS_UP) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_UPARROW);
+			if ((curr & VirtualDPad.POS_LEFT) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_LEFTARROW);
+			if ((curr & VirtualDPad.POS_DOWN) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_DOWNARROW);
+			if ((curr & VirtualDPad.POS_RIGHT) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_RIGHTARROW);
+				if (mVstickPosition != mVstickLastPos)
+				mVstickLastPos = mVstickPosition;
+		}
+		
+		int changed = mPrevButtonsState ^ buttons;
+		if ((changed & mButtonIDs[TURBO_BUTTON]) != 0) {
+			if ((buttons & mButtonIDs[TURBO_BUTTON]) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_RCTRL);
+			else
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_RCTRL);
+		}
+			
+		if ((changed & mButtonIDs[USE_BUTTON]) != 0) {
+			if ((buttons & mButtonIDs[USE_BUTTON]) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_RSHIFT);
+			else
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_RSHIFT);
+		}
+			
+		if ((changed & mButtonIDs[ENTER_BUTTON]) != 0) {
+			if ((buttons & mButtonIDs[ENTER_BUTTON]) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_ENTER);
+			else
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_ENTER);
+		}
+			
+		if ((changed & mButtonIDs[ESCAPE_BUTTON]) != 0) {
+			if ((buttons & mButtonIDs[ESCAPE_BUTTON]) != 0)
+				SDLActivity.onNativeKeyDown(KeyCodes.KEY_ESCAPE);
+			else
+				SDLActivity.onNativeKeyUp(KeyCodes.KEY_ESCAPE);
+		}
+		
+		mPrevButtonsState = buttons;
 	}
 }
 
